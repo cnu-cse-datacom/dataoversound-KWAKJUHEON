@@ -81,8 +81,8 @@ public class Listentone {
                     //EncoderDecoder decoder = new EncoderDecoder();
 
                     try {
-                        byte[] real = new byte[byte_stream.size()];
-                        for (int i = 0; i < byte_stream.size(); i++) {
+                        byte[] real = new byte[byte_stream.size()-4];
+                        for (int i = 0; i < byte_stream.size()-4; i++) {
                             real[i] = byte_stream.get(i);
 
                         }
@@ -90,6 +90,10 @@ public class Listentone {
 
                         String Result = new String(real, "UTF-8");
                         Log.d("[message]", Result);
+                        for (int i = 0; i < packets.size(); i++){
+                            packets.remove(i);
+                        }
+                        in_packet = false;
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -99,7 +103,7 @@ public class Listentone {
                     packets.add(dom);
 
                 } else if (match(dom, HANDSHAKE_START_HZ)) {
-                    Log.d("[######]", "HANDSHAKE Start!");
+                    Log.d("[message]", "HANDSHAKE Start!");
                     in_packet = true;
                 }
             }
