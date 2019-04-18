@@ -78,7 +78,6 @@ public class Listentone {
                     //byte[] byte_stream2;
                     byte_stream = extract_packet(packets);
 
-                    // RSCodec 필요, 근데 뭐냐......
                     //EncoderDecoder decoder = new EncoderDecoder();
 
                     try {
