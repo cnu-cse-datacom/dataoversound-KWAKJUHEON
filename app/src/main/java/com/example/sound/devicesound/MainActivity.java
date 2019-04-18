@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
@@ -33,13 +34,10 @@ public class MainActivity extends AppCompatActivity implements ToneThread.ToneCa
     ListView listView;
 
 
-
     EditText text;
     View play_tone;
     View listen_tone;
     ProgressBar progress;
-
-
 
 
     @Override
@@ -68,10 +66,9 @@ public class MainActivity extends AppCompatActivity implements ToneThread.ToneCa
             public void onClick(View v) {
 
                 String message = text.getText().toString();
-                if(message.matches("")) {
+                if (message.matches("")) {
                     Toast.makeText(MainActivity.this, "메세지를 입력하세요!", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     sendMessage(message);
                     listItems.add(message);
                     Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -82,15 +79,16 @@ public class MainActivity extends AppCompatActivity implements ToneThread.ToneCa
         });
 
         listen_tone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Listen Start!", Toast.LENGTH_SHORT).show();
-                requestAudioPermissions(); }
-        }
+                                           @Override
+                                           public void onClick(View v) {
+                                               Toast.makeText(MainActivity.this, "Listen Start!", Toast.LENGTH_SHORT).show();
+                                               requestAudioPermissions();
+                                           }
+                                       }
         );
     }
 
-    public void receiveMessage(){
+    public void receiveMessage() {
 
         Thread receive = new Thread(new Runnable() {
 
@@ -100,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements ToneThread.ToneCa
             public void run() {
 
                 recv_tone.PreRequest();
-
             }
         });
         Toast.makeText(MainActivity.this, "ThreadStart!", Toast.LENGTH_SHORT).show();
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements ToneThread.ToneCa
         receive.start();
     }
 
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         Log.d("Message", message);
         byte[] payload = new byte[0];
         payload = message.getBytes(Charset.forName("UTF-8"));
@@ -127,28 +124,28 @@ public class MainActivity extends AppCompatActivity implements ToneThread.ToneCa
         play_tone.setEnabled(false);
         ToneThread.ToneIterator tone = new BitstreamToneGenerator(bis, 7);
         Log.d("TONE", tone.toString());
-        Thread play_tone  = new ToneThread(tone, MainActivity.this);
+        Thread play_tone = new ToneThread(tone, MainActivity.this);
         play_tone.start();
         //while(true){
         //try {
-         //   Thread.sleep(3000);
-          //  if(play_tone.isAlive()==false){
-           //     Toast.makeText(this, "listenStart!", Toast.LENGTH_SHORT).show();
+        //   Thread.sleep(3000);
+        //  if(play_tone.isAlive()==false){
+        //     Toast.makeText(this, "listenStart!", Toast.LENGTH_SHORT).show();
 
-               // break;
-           // }
-       // }
+        // break;
+        // }
+        // }
         //catch(InterruptedException e) {
-       //     e.printStackTrace();
+        //     e.printStackTrace();
 
         //}
 
-      //  }
-
+        //  }
 
 
     }
-    private void requestAudioPermissions(){
+
+    private void requestAudioPermissions() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -181,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements ToneThread.ToneCa
         }
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
